@@ -17,15 +17,10 @@ public class VilleControleur {
     private List<Ville> villes = new ArrayList<>();
 
     public VilleControleur() {
-        villes.add(new Ville(1, "Nice", 343000));
-        villes.add(new Ville(2, "Carcassonne", 47800));
-        villes.add(new Ville(3, "Narbonne", 53400));
-        villes.add(new Ville(4, "Lyon", 484000));
-        villes.add(new Ville(5, "Foix", 9700));
-        villes.add(new Ville(6, "Pau", 77200));
     }
- @Autowired
- private VilleService villeService;
+
+    @Autowired
+    private VilleService villeService;
 
 
     @GetMapping
@@ -44,14 +39,24 @@ public class VilleControleur {
     public Ville getVilleById(@PathVariable int id) {
         // méthode GET qui permet de retrouver une ville à partir de son id
         return villeService.extractVille(id);
-       }
+    }
+
+    @GetMapping("/departement/{nomDep}/plusgrandeville")
+    public Ville getplusGrandevilleDepartement(@PathVariable String nomDep) {
+        // méthode GET qui permet Lister les n plus grandes villes d’un département
+        return villeService.plusGrandevilleDepartement(nomDep);
+    }
+
+    @GetMapping("/departement/{nomDep}/villeDepartementPopulation")
+    public List<Ville> getVilleDepartementPopulation(@PathVariable String nomDep, @RequestParam int min, @RequestParam int max) {
+        // méthode GET qui permet Lister les n plus grandes villes d’un département
+        return villeService.villeDepartementPopulation(nomDep, min, max);
+    }
 
     @PutMapping
     public List<Ville> insererVille(@RequestBody Ville nvVille) {
         // méthode PUT qui ne crée une ville que si l’identifiant n'existe pas déjà
-       return villeService.insertVille(nvVille);
-
-
+        return villeService.insertVille(nvVille);
     }
 
     @PostMapping("/modif/nom/{nomVille}")
@@ -73,20 +78,12 @@ public class VilleControleur {
     @PostMapping("/modif/{id}")
     public List<Ville> modifierVilleById(@PathVariable int id, @RequestBody Ville nvVille) {
         // méthode POST qui modifie une ville à partir de son id
-        /*if (id <= 0) {
-            return ResponseEntity.badRequest().body("Identifiant incorrect");
-        }*/
-        return villeService.modifierVille(id,nvVille);
-        //return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
+        return villeService.modifierVille(id, nvVille);
     }
 
     @DeleteMapping("delete/{id}")
     public List<Ville> deleteVilleById(@PathVariable int id) {
         // méthode DELETE qui supprime une ville à partir de son id
-        /*if (nvVille.getId() == 0) {
-            return ResponseEntity.badRequest().body("Identifiant incorrect");
-        }*/
         return villeService.supprimerVille(id);
-       // return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
     }
 }
