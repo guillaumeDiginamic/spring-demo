@@ -1,6 +1,7 @@
 package fr.diginamic.springdemo.controleurs;
 
 import fr.diginamic.springdemo.entites.Ville;
+import fr.diginamic.springdemo.services.VilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,48 +24,33 @@ public class VilleControleur {
         villes.add(new Ville(5, "Foix", 9700));
         villes.add(new Ville(6, "Pau", 77200));
     }
+ @Autowired
+ private VilleService villeService;
+
 
     @GetMapping
     public List<Ville> getVilles() {
         // méthode GET qui permet de retrouver toutes les villes
-        return villes;
+        return villeService.extractVilles();
     }
 
     @GetMapping("/search")
     public Ville getVille(@RequestParam String nomVille) {
         // méthode GET qui permet de retrouver une ville à partir de son nom
-        for (Ville v : villes) {
-            if (v.getNom().equals(nomVille)) {
-                return v;
-            }
-        }
-        return null;
+        return villeService.extractVille(nomVille);
     }
 
     @GetMapping("/{id}")
     public Ville getVilleById(@PathVariable int id) {
         // méthode GET qui permet de retrouver une ville à partir de son id
-        for (Ville v : villes) {
-            if (v.getId() == id) {
-                return v;
-            }
-        }
-        return null;
-    }
+        return villeService.extractVille(id);
+       }
 
     @PutMapping
-    public ResponseEntity<String> insererVille(@RequestBody Ville nvVille) {
+    public List<Ville> insererVille(@RequestBody Ville nvVille) {
         // méthode PUT qui ne crée une ville que si l’identifiant n'existe pas déjà
-        if (nvVille.getId() == 0) {
-            return ResponseEntity.badRequest().body("Identifiant incorrect");
-        }
-        for (Ville v : villes) {
-            if (v.getId() == nvVille.getId()) {
-                return ResponseEntity.badRequest().body("Ville existe déjà");
-            }
-        }
-        villes.add(nvVille);
-        return ResponseEntity.ok("Ville ajoutée avec succes");
+       return villeService.insertVille(nvVille);
+
 
     }
 
@@ -85,36 +71,22 @@ public class VilleControleur {
     }
 
     @PostMapping("/modif/{id}")
-    public ResponseEntity<String> modifierVilleById(@PathVariable int id, @RequestBody Ville nvVille) {
+    public List<Ville> modifierVilleById(@PathVariable int id, @RequestBody Ville nvVille) {
         // méthode POST qui modifie une ville à partir de son id
-        if (id <= 0) {
+        /*if (id <= 0) {
             return ResponseEntity.badRequest().body("Identifiant incorrect");
-        }
-        for (Ville v : villes) {
-            System.out.println("ici");
-            if (v.getId() == id) {
-                v.setNom(nvVille.getNom());
-                v.setNbHabitants(nvVille.getNbHabitants());
-                return ResponseEntity.ok("Ville modifiée avec succes");
-            }
-        }
-        return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
+        }*/
+        return villeService.modifierVille(id,nvVille);
+        //return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteVilleById(@PathVariable int id, @RequestBody Ville nvVille) {
+    public List<Ville> deleteVilleById(@PathVariable int id) {
         // méthode DELETE qui supprime une ville à partir de son id
-        if (nvVille.getId() == 0) {
+        /*if (nvVille.getId() == 0) {
             return ResponseEntity.badRequest().body("Identifiant incorrect");
-        }
-        Iterator<Ville> iter = villes.iterator();
-        while (iter.hasNext()) {
-            Ville ville = iter.next();
-            if (ville.getId() == id) {
-                iter.remove();
-                return ResponseEntity.ok("Ville supprimée avec succes");
-            }
-        }
-        return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
+        }*/
+        return villeService.supprimerVille(id);
+       // return ResponseEntity.badRequest().body("Ville id=" + id + " non trouvée");
     }
 }

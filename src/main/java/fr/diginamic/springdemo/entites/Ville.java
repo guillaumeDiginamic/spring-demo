@@ -1,16 +1,23 @@
 package fr.diginamic.springdemo.entites;
 
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import java.util.Objects;
 
+import static jakarta.persistence.GenerationType.AUTO;
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@Entity
 public class Ville {
-    // Ajouter Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nom;
     private int nbHabitants;
-
     public Ville() {
     }
-
     public Ville(int id, String nom, int nbHabitants) {
         this.id = id;
         this.nom = nom;
