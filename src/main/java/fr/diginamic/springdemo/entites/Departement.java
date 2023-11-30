@@ -14,10 +14,11 @@ public class Departement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nom;
-    private int code;
+    private String code;
 
-    @OneToMany(mappedBy="departement")
+    @OneToMany(mappedBy = "departement")
     private Set<Ville> villes;
+
     public Departement() {
     }
 
@@ -37,13 +38,11 @@ public class Departement {
         this.nom = nom;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
-
-
 }

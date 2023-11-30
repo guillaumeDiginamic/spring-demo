@@ -16,9 +16,11 @@ public class Ville {
     private int id;
     private String nom;
     private int nbHabitants;
+
     @ManyToOne
-    @JoinColumn(name="DEP_ID")
+    @JoinColumn(name = "DEP_ID")
     private Departement departement;
+
     public Ville() {
     }
 
@@ -33,7 +35,7 @@ public class Ville {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ville ville = (Ville) o;
-        return id ==ville.id && nbHabitants == ville.nbHabitants && Objects.equals(nom, ville.nom);
+        return id == ville.id && nbHabitants == ville.nbHabitants && Objects.equals(nom, ville.nom);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class Ville {
 
     @Override
     public String toString() {
-        return nom + " ("+nbHabitants+")";
+        return nom + " (" + nbHabitants + ")";
     }
 
     public int getId() {
@@ -52,19 +54,30 @@ public class Ville {
 
     public void setId(int id) {
         this.id = id;
-    }public String getNom() {
+    }
+
+    public String getNom() {
         return nom;
     }
 
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     public int getNbHabitants() {
         return nbHabitants;
     }
 
     public void setNbHabitants(int nbHabitants) {
         this.nbHabitants = nbHabitants;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
     }
 
 }
