@@ -32,6 +32,22 @@ public class DepartementService {
         return query.getSingleResult();
     }
 
+    public boolean existDepartementByCode(String code) {
+        // extrait le Departement dont le nom est passé en paramètre
+        TypedQuery<Departement> query = em.createQuery("SELECT d FROM Departement d WHERE d.code = :code GROUP BY d.code", Departement.class);
+        query.setParameter("code", code);
+        return query.getResultList().isEmpty();
+
+    }
+    public Departement extractDepartementByCode(String code) {
+        // extrait le Departement dont le nom est passé en paramètre
+        TypedQuery<Departement> query = em.createQuery("SELECT d FROM Departement d WHERE d.code = :code GROUP BY d.code", Departement.class);
+        query.setParameter("code", code);
+        return query.getSingleResult();
+
+    }
+
+
     @Transactional
     public List<Departement> insertDepartement(Departement nvDepartement) {
         // insère un nouveau Departement en base et retourne la liste des Departements après insertion
